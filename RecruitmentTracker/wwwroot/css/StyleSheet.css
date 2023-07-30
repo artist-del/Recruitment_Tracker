@@ -1,0 +1,67 @@
+﻿body {
+    color: #2a2a2a;
+    background-color: #eff0f3 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.table {
+    box-shadow: 10px 10px 10px rgba(0,0,0,0.3);
+}
+
+.table thead {
+     background-color: #1b6ec2;
+     color: azure;
+     font-weight: 300;
+     font-size: 11px;
+     letter-spacing: 1px;
+     text-transform: uppercase;
+}
+
+table tbody tr td{
+    padding: 2px !important;
+    text-align: center;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    color: #313030;
+}
+
+.tblFlex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.btn {
+    background-color: #1b6ec2;
+    border-style: none;
+    color: azure;
+    font-weight: 500;
+    margin: 0px 5px 10px 20px;
+    padding: 5px !important;
+}
+
+.recruitTracker {
+    text-align: center; 
+    font-weight: 700; 
+    font-size: 25px;
+    background-color: #1b6ec2;
+    color:azure;
+    padding: 2px; 
+    letter-spacing: 2px;
+    border-radius: 5px;
+}
+
+.modal-header {
+    background-color: #1b6ec2;
+    color: azure;
+}
+
+.fa-asterisk{
+    color: red;
+    font-size: 7px;
+}
+
+

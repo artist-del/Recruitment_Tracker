@@ -1,0 +1,399 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model ApplicantInfo;
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="~/css/stylesheet.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...insert hash here..." crossorigin="anonymous" />
+
+<style>
+    .loading-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-item: center;
+        margin-top: -80px;
+    }
+    .loading-wrapper img{
+        width: 200px;
+        height: 200px;
+        margin-bottom: 10px;
+    }
+</style>
+<div class="loading-container">
+    <div class="loading-wrapper">
+        <img src="~/loading.gif" />
+        <i style="margin: -30px;">Please wait while we setting up for you. . .</i>
+    </div>
+</div>
+
+
+<br />
+
+@*Save Modal*@
+<div class="modal fade" tabindex="-1" role="dialog" id="modalSave">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Applicant Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="SaveInfo" method="post" id="formSave">
+                    <div class="row">
+                        <div class="col-md-6">
+                           <div class="row">
+                             <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fullName">First Name <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                    <input class="form-control" placeholder="Full Name" asp-for="ApplicantFirstName" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fullName">Middle Name <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                    <input class="form-control" placeholder="Middle Name" asp-for="ApplicantMiddleName" required />
+                                </div>
+                            </div> <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fullName">Last Name <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                    <input class="form-control" placeholder="Last Name" asp-for="ApplicantLastName" required />
+                                </div>
+                            </div>
+                           </div>
+
+                            <div class="form-group">
+                                <label for="postion">Applicant Position <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                <input class="form-control" placeholder="Position" asp-for="ApplicantPosition"  required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="status">Applicant Status <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                <select class="form-control" asp-for="ApplicantStatus">
+                                    <option value="">Please select</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postion">Applicant Status Details<i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                @*<input class="form-control" placeholder="Status Detail" asp-for="ApplicantStatusDetail" id="statusDetail" required />*@
+                                <textarea class="form-control" rows="5" asp-for="ApplicantStatusDetail"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="interview">Interview 1 <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                <input class="form-control" placeholder="Interview" asp-for="ApplicantInterview"  required />
+                            </div>
+
+                           <div class="row">
+                                <div class="col-md-4"> 
+                                    <div class="form-group">
+                                        <label for="exp">Applicant Exp. Salary <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                        <input class="form-control" placeholder="Exp Salary" asp-for="ApplicantExpSalary" required />
+                                    </div>
+                                </div>
+
+                               <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="rec">Applicant Rec. Salary <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                        <input class="form-control" placeholder="Rec. Salary" asp-for="ApplicantRecSalary" required />
+                                    </div>
+                               </div>
+
+                               <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="cur">Applicant Cur. Salary <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                        <input class="form-control" placeholder="Current Salary" asp-for="ApplicantCurSalary" required />
+                                    </div>
+                               </div>
+                           </div>
+
+                            <div class="form-group">
+                                <label for="comment">Applicant Comment <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                @*<input class="form-control" placeholder="Comment" asp-for="ApplicantComment"  required />*@
+                                <textarea class="form-control" placeholder="Comment" asp-for="ApplicantComment" style="height: 220px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-sm float-right" id="btnSave">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Update Modal*@
+<div class="modal fade" tabindex="-1" role="dialog" id="modalEdit">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Applicant Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="SaveInfo" method="post" id="formUpdate">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="hidden" id="applicantId" asp-for="ApplicantId"/>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="fullName">Full Name</label>
+                                        <input class="form-control" placeholder="Full Name" asp-for="ApplicantFirstName" id="firstName" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="fullName">Middle Name</label>
+                                        <input class="form-control" placeholder="Middle Name" asp-for="ApplicantMiddleName" id="middleName" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="fullName">Last Name</label>
+                                        <input class="form-control" placeholder="Last Name" asp-for="ApplicantLastName" id="lastName" required />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postion">Applicant Position</label>
+                                <input class="form-control" placeholder="Position" asp-for="ApplicantPosition" id="postion" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="status">Applicant Status</label>
+                                <select class="form-control" asp-for="ApplicantStatus" id="applicantStatus">
+                                    <option value="">Please select</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postion">Applicant Status Detail</label>
+                                @*<input class="form-control" placeholder="Status Detail" asp-for="ApplicantStatusDetail" id="statusDetail" required />*@
+                                <textarea class="form-control" rows="5" asp-for="ApplicantStatusDetail" id="applicantStatusDetail"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="interview">Interview 1</label>
+                                <input class="form-control" placeholder="Interview" asp-for="ApplicantInterview" id="interview" required />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="exp">Applicant Exp. Salary <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                        <input class="form-control" placeholder="Exp Salary" asp-for="ApplicantExpSalary" id="exp" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="rec">Applicant Rec. Salary <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                        <input class="form-control" placeholder="Rec. Salary" asp-for="ApplicantRecSalary" id="rec" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="cur">Applicant Cur. Salary <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                        <input class="form-control" placeholder="Current Salary" asp-for="ApplicantCurSalary" id="cur" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="comment">Applicant Comment</label>
+                                <textarea class="form-control" placeholder="Comment" asp-for="ApplicantComment" style="height: 220px;" id="comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm float-right" onclick="btnUpdate()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (TempData["notif"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Applicant Information has been added.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<p class="lead fw-normal mb-0 me-3 recruitTracker">Recruitment Applicant Tracker</p>
+<br />
+<br />
+    <div class="tblFlex">
+        <button class="btn btn-primary btn-sm btnAdd" data-target="#modalSave" data-toggle="modal">Add Applicant</button>
+    </div>
+
+<div class="table">
+    <table class="table-responsive" id="applicantTable">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Position</th>
+                <th>Status</th>
+                <th>Status Detail</th>
+                <th>Interview</th>
+                <th>Exp. Salary</th>
+                <th>Rec. Salary</th>
+                <th>Cur. Salary</th>
+                <th>Comments</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.data)
+            {
+                <tr>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="@item.ApplicantFirstName">@item.ApplicantFirstName @item.ApplicantMiddleName @item.ApplicantLastName</td>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal">@item.ApplicantPosition</td>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal">@item.ApplicantStatus</td>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal">@item.ApplicantStatusDetail</td>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal">@item.ApplicantInterview</td>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal">@item.ApplicantExpSalary</td>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal">@item.ApplicantRecSalary</td>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal">@item.ApplicantCurSalary</td>
+                    <td onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal">@item.ApplicantComment</td>
+                    <td>
+                       @* <button class="btn btn-info btn-sm" onclick="edit(@item.ApplicantId)" data-target="#modalEdit" data-toggle="modal"><i class="fas fa-edit"></i></button>*@
+                        <button class="btn btn-info btn-sm btn-delete" onclick="btnDelete(@item.ApplicantId)"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.js"></script>
+<script src="~/js/index.js"></script>
+<script>
+    window.addEventListener('load', ()=>{
+        document.querySelector('.loading-container').style.display='none';
+    })
+
+    $(document).ready(function () {
+        $('#applicantTable').DataTable();
+    });
+
+    let edit = (id) => {
+
+        let url = '/Home/GetUserApplicant/' + id;
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: (e) => {
+                $('#applicantId').val(e.list.applicantId);
+                $('#firstName').val(e.list.applicantFirstName);
+                $('#postion').val(e.list.applicantPosition);
+                $('#applicantStatus').val(e.list.applicantStatus);
+                $('#applicantStatusDetail').val(e.list.applicantStatusDetail);
+                $('#interview').val(e.list.applicantInterview);
+                $('#exp').val(e.list.applicantExpSalary);
+                $('#rec').val(e.list.applicantRecSalary);
+                $('#cur').val(e.list.applicantCurSalary);
+                $('#comment').val(e.list.applicantComment);
+                $('#middleName').val(e.list.applicantMiddleName);
+                $('#lastName').val(e.list.applicantLastName);
+
+                console.log(e.list.applicantFullName);
+            }
+
+        })
+    }
+
+    let btnUpdate=()=>{
+        let data = $('#formUpdate').serialize();
+        let url = '/Home/UpdateApplicant';
+
+        $.ajax({
+            url: url,
+            data: data,
+            type:'post',
+            success: (e)=>{
+                if(e.check === true){
+                    Swal.fire("Information","Applicant Information Update Successfully!","success").then(()=>{
+                        window.location.href='/Home/Index';
+                    })
+                }
+            }
+        })
+    }
+
+    let btnDelete = (Id)=>{
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Think before proceeding thank you!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let url = "/Home/RemoveApplicant/"+Id;
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    success: (e)=>{
+                        if(e.check){
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            ).then(()=>{
+                                window.location.href="/Home/Index";
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+</script>
